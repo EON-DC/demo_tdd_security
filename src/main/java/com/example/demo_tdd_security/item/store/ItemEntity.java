@@ -1,7 +1,7 @@
 package com.example.demo_tdd_security.item.store;
 
+
 import com.example.demo_tdd_security.item.domain.Item;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +11,8 @@ import org.springframework.beans.BeanUtils;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
