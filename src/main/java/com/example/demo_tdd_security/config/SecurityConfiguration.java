@@ -33,11 +33,12 @@ public class SecurityConfiguration {
         return http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login/**", "/signup/**").permitAll()
+                .antMatchers("/login/**", "/signup/**", "/swagger-ui/**","/v2/**", "/webjars/**", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtRequestFilter(userDetailsService, jwtSecretKey),
                         UsernamePasswordAuthenticationFilter.class)
+                .headers(header -> header.frameOptions().sameOrigin().httpStrictTransportSecurity().disable())
                 .build();
     }
 }

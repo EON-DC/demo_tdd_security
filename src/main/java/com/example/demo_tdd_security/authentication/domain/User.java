@@ -1,5 +1,6 @@
 package com.example.demo_tdd_security.authentication.domain;
 
+import com.example.demo_tdd_security.order.domain.Order;
 import com.example.demo_tdd_security.share.domain.NameValue;
 import com.example.demo_tdd_security.share.domain.NameValueList;
 import lombok.AllArgsConstructor;

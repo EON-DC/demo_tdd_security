@@ -3,6 +3,8 @@ package com.example.demo_tdd_security.authentication.store;
 
 import com.example.demo_tdd_security.authentication.domain.User;
 import com.example.demo_tdd_security.authentication.domain.UserRole;
+import com.example.demo_tdd_security.order.domain.Order;
+import com.example.demo_tdd_security.order.store.OrderEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
