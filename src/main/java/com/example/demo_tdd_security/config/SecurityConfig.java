@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
@@ -30,8 +29,8 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/login/**", "/swagger-ui/**", "v2/**", "/swagger-resources/**"
-                        , "/webjars/**").permitAll()
+                .antMatchers("/", "/login/**", "/signup/**", "/swagger-ui/**", "v2/**", "/swagger-resources/**"
+                        , "/webjars/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtRequestFilter(userDetailsService, secretKey)

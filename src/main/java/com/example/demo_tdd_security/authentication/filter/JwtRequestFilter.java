@@ -28,7 +28,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.length() > 7) {
-            String token = bearerToken.substring(7);
+            String token = bearerToken;
+                    // bearerToken.substring(7);
 
             String extractedEmail = Jwts.parser()
                     .setSigningKey(jwtSecretKey.getSecretkeyAsBytes())

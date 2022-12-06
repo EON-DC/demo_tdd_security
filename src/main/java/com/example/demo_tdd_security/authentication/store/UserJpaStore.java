@@ -2,12 +2,14 @@ package com.example.demo_tdd_security.authentication.store;
 
 import com.example.demo_tdd_security.authentication.domain.User;
 import com.example.demo_tdd_security.authentication.exception.NoSuchUserException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class UserJpaStore implements UserStore {
 
     private UserJpaRepository jpaRepository;
@@ -51,6 +53,7 @@ public class UserJpaStore implements UserStore {
 
     @Override
     public User getUserByEmail(String email) {
+        log.info("email input : {} ", email);
         return jpaRepository.findByEmail(email).orElseThrow(
                 () -> new RuntimeException("Invalid username or password"))
                 .toDomain();

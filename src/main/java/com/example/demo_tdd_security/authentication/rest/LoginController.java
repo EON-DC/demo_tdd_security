@@ -9,6 +9,7 @@ import com.example.demo_tdd_security.share.token.EndpointAccessTokenGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,10 +28,10 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public TokenResponse login(LoginRequestDto loginRequestDto) {
+    public TokenResponse login(@RequestBody  LoginRequestDto loginRequestDto) {
         User user = userStore.getUserByEmail(loginRequestDto.getEmail());
-        if (passwordEncoder.matches(user.getPassword(), loginRequestDto.getPassword()) == false) {
-            throw new RuntimeException("Invalid username or password");
+        if (passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword()) == false) {
+            throw new RuntimeException("login failed.. Invalid username or password");
         }
         return TokenResponse.builder()
                 .accessToken(endpointAccessTokenGenerator.createAccessToken(loginRequestDto.getEmail(), user.getRolesAsString()))
