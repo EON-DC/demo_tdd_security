@@ -11,11 +11,11 @@ public class NameValueList {
         nameValues = new ArrayList<>();
     }
 
-    public void add(NameValue nameValue){
+    public void add(NameValue nameValue) {
         this.nameValues.add(nameValue);
     }
 
-    public List<NameValue> getNameValues() {
+    public List<NameValue> getNameValues (){
         return nameValues;
     }
 }

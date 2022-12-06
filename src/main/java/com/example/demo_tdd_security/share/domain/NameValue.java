@@ -1,7 +1,7 @@
 package com.example.demo_tdd_security.share.domain;
 
-public class NameValue {
 
+public class NameValue {
     private String name;
     private String value;
 

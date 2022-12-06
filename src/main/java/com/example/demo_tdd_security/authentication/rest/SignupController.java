@@ -1,6 +1,5 @@
 package com.example.demo_tdd_security.authentication.rest;
 
-
 import com.example.demo_tdd_security.authentication.domain.User;
 import com.example.demo_tdd_security.authentication.domain.UserRole;
 import com.example.demo_tdd_security.authentication.rest.dto.SignupRequestDto;
@@ -25,11 +24,13 @@ public class SignupController {
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupRequestDto signupRequestDto) {
-        User savedUser = userStore.addUser(User.builder()
+        User user = userStore.saveUser(User.builder()
                 .email(signupRequestDto.getEmail())
                 .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                 .roles(Collections.singletonList(UserRole.ROLE_USER))
-                .build());
-        return savedUser.getId();
+                .build()
+        );
+        return user.getId();
+
     }
 }

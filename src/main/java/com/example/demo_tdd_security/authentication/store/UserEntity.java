@@ -5,8 +5,7 @@ import com.example.demo_tdd_security.authentication.domain.User;
 import com.example.demo_tdd_security.authentication.domain.UserRole;
 import com.example.demo_tdd_security.order.domain.Order;
 import com.example.demo_tdd_security.order.store.OrderEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
@@ -15,30 +14,32 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "users")
-@Table(name= "TB_USER")
 @Getter
 @Setter
+@Table(name = "TB_USER")
 public class UserEntity {
 
-    @Id @Column(name = "user_id")
+    @Id
+    @Column(name = "user_id")
     private String id;
+
     private String name;
+    private String password;
+    private String phone;
     @Column(unique = true)
     private String email;
-    private String phone;
-    private String password;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<UserRole> roles;
 
     @OneToMany(mappedBy = "userEntity", orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
 
-    public UserEntity(User user){
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<UserRole> roles;
+
+    public UserEntity(User user) {
         BeanUtils.copyProperties(user, this);
     }
 
-    public UserEntity() {
+    public UserEntity(){
         this.id = UUID.randomUUID().toString();
         this.roles = new ArrayList<>();
     }
@@ -55,4 +56,5 @@ public class UserEntity {
         }
         return user;
     }
+
 }

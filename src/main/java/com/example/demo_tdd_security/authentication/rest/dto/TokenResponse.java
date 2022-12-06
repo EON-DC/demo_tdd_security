@@ -1,6 +1,5 @@
 package com.example.demo_tdd_security.authentication.rest.dto;
 
-
 import lombok.*;
 
 @Getter
@@ -12,4 +11,5 @@ public class TokenResponse {
 
     private String accessToken;
     private String refreshToken;
+
 }

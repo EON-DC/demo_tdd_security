@@ -2,7 +2,6 @@ package com.example.demo_tdd_security.share.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -13,14 +12,14 @@ public class JsonUtil {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public static String toJson(Object object) {
-        try{
+        try {
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public static <T> T fromJson(String json, Class<T> clazz){
+    public static <T> T fromJson(String json, Class<T> clazz) {
         try {
             return mapper.readValue(json, clazz);
         } catch (JsonProcessingException e) {

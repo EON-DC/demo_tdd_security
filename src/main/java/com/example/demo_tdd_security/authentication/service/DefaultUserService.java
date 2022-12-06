@@ -1,6 +1,7 @@
 package com.example.demo_tdd_security.authentication.service;
 
 import com.example.demo_tdd_security.authentication.domain.User;
+import com.example.demo_tdd_security.authentication.exception.NoSuchUserException;
 import com.example.demo_tdd_security.authentication.store.UserStore;
 import com.example.demo_tdd_security.share.domain.NameValueList;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,30 +21,29 @@ public class DefaultUserService implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAllUsers() {
         return userStore.getAllUsers();
     }
 
     @Override
-    public User get(String id) {
+    public User getUser(String id) {
         return userStore.getUser(id);
     }
 
     @Override
-    public User add(User user) {
-        return userStore.addUser(user);
+    public User addUser(User user) {
+        return userStore.saveUser(user);
     }
 
     @Override
-    public User update(String id, NameValueList nameValueList) {
+    public User updateUser(String id, NameValueList nameValueList) {
         User user = userStore.getUser(id);
         user.setValues(nameValueList);
-
         return userStore.updateUser(user);
     }
 
     @Override
-    public void delete(String id) {
+    public void deleteUser(String id) {
         userStore.getUser(id);
         userStore.deleteUser(id);
     }
@@ -54,7 +54,9 @@ public class DefaultUserService implements UserService, UserDetailsService {
             User user = userStore.getUserByEmail(email);
             return user;
         } catch (Exception e) {
-            throw new UsernameNotFoundException(e.getMessage());
+            throw new NoSuchUserException(e.getMessage());
         }
     }
+
+
 }

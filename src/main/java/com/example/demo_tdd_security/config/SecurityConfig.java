@@ -1,8 +1,10 @@
 package com.example.demo_tdd_security.config;
 
+
 import com.example.demo_tdd_security.authentication.filter.JwtRequestFilter;
 import com.example.demo_tdd_security.share.token.JwtSecretKey;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,21 +13,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
+    private final JwtSecretKey secretKey;
 
-    private final JwtSecretKey jwtSecretKey;
-
-    public SecurityConfiguration(UserDetailsService userDetailsService, JwtSecretKey jwtSecretKey) {
+    public SecurityConfig(UserDetailsService userDetailsService, JwtSecretKey secretKey) {
         this.userDetailsService = userDetailsService;
-        this.jwtSecretKey = jwtSecretKey;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        this.secretKey = secretKey;
     }
 
     @Bean
@@ -33,12 +30,19 @@ public class SecurityConfiguration {
         return http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login/**", "/signup/**", "/swagger-ui/**","/v2/**", "/webjars/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/", "/login/**", "/swagger-ui/**", "v2/**", "/swagger-resources/**"
+                        , "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtRequestFilter(userDetailsService, jwtSecretKey),
-                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtRequestFilter(userDetailsService, secretKey)
+                        , UsernamePasswordAuthenticationFilter.class)
                 .headers(header -> header.frameOptions().sameOrigin().httpStrictTransportSecurity().disable())
                 .build();
     }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
 }

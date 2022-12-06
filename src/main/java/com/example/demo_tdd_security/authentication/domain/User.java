@@ -11,11 +11,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Getter
 @Setter
@@ -27,12 +25,9 @@ public class User implements UserDetails {
     private String id = UUID.randomUUID().toString();
 
     private String name;
-
-    private String email;
-
-    private String phone;
-
     private String password;
+    private String phone;
+    private String email;
 
     @Builder.Default
     private List<Order> orders = new ArrayList<>();
@@ -50,21 +45,21 @@ public class User implements UserDetails {
         for (NameValue nameValue : nameValueList.getNameValues()) {
             String name = nameValue.getName();
             String value = nameValue.getValue();
-            switch (name){
-                case "name":
+            switch (name) {
+                case "name" :
                     this.name = value;
                     break;
-                case "email":
+                case "email" :
                     this.email = value;
                     break;
-                case "phone":
+                case "phone" :
                     this.phone = value;
                     break;
-                case "password":
+                case "password" :
                     this.password = value;
                     break;
                 default:
-                    throw new IllegalArgumentException("Unknown field " + name);
+                    throw new IllegalArgumentException("No such field : " + name);
             }
         }
     }
@@ -105,5 +100,6 @@ public class User implements UserDetails {
         return roles.stream()
                 .map(UserRole::name)
                 .collect(Collectors.toList());
+
     }
 }

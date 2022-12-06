@@ -2,7 +2,6 @@ package com.example.demo_tdd_security.authentication.filter;
 
 import com.example.demo_tdd_security.share.token.JwtSecretKey;
 import io.jsonwebtoken.Jwts;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtRequestFilter extends OncePerRequestFilter {
+
     private final UserDetailsService userDetailsService;
     private final JwtSecretKey jwtSecretKey;
 
@@ -29,20 +29,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.length() > 7) {
             String token = bearerToken.substring(7);
+
             String extractedEmail = Jwts.parser()
-                    .setSigningKey(jwtSecretKey.getSecretKeyAsBytes())
+                    .setSigningKey(jwtSecretKey.getSecretkeyAsBytes())
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
-
             UserDetails user = userDetailsService.loadUserByUsername(extractedEmail);
-
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                    user, null, user.getAuthorities());
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(
+                            user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
         }
         filterChain.doFilter(request, response);
-
     }
 }

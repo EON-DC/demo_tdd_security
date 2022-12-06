@@ -16,6 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Order {
+
     private String id;
     private Timestamp creationTimestamp;
     private Integer price;
@@ -36,19 +37,20 @@ public class Order {
     }
 
     public void setValues(NameValueList nameValueList) {
-        for (NameValue nameValue :nameValueList.getNameValues()) {
+        for (NameValue nameValue : nameValueList.getNameValues()) {
             String name = nameValue.getName();
             String value = nameValue.getValue();
             switch (name) {
                 case "price" :
-                    this.price = Integer.valueOf(nameValue.getValue());
+                    this.price = Integer.valueOf(value);
                     break;
                 case "user" :
                     this.user = JsonUtil.fromJson(value, User.class);
                     break;
                 default:
-                    throw new IllegalArgumentException("No such field " + name);
+                    throw new IllegalArgumentException("No such field : " + name);
             }
         }
     }
+
 }

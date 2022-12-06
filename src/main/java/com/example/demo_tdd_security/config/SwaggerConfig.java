@@ -2,33 +2,30 @@ package com.example.demo_tdd_security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 @Configuration
 @EnableSwagger2
-public class SwaggerConfiguration {
-
+public class SwaggerConfig {
     @Bean
-    public Docket api(){
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("example")
-                .apiInfo(apiInfo())
+                .apiInfo(new ApiInfo("RestApi demo tdd with Spring security",
+                        "", "1.0", "",
+                        new Contact("park", "", ""), "", "",
+                        new ArrayList<>()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.demo_tdd_security"))
-                .paths(PathSelectors.any()).build();
-    }
-
-    private ApiInfo apiInfo(){
-        return new ApiInfoBuilder()
-                .title("around hub")
-                .description("설명부분")
-                .version("1.0")
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
                 .build();
     }
 }

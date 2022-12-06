@@ -4,8 +4,8 @@ import com.example.demo_tdd_security.authentication.domain.User;
 import com.example.demo_tdd_security.authentication.exception.NoSuchUserException;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserJpaStore implements UserStore {
@@ -18,22 +18,24 @@ public class UserJpaStore implements UserStore {
 
     @Override
     public List<User> getAllUsers() {
-        return jpaRepository.findAll()
-                .stream()
-                .map(UserEntity::toDomain)
-                .collect(Collectors.toList());
+        List<UserEntity> userEntities = jpaRepository.findAll();
+        List<User> users = new ArrayList<>();
+        for (UserEntity userEntity : userEntities) {
+            users.add(userEntity.toDomain());
+        }
+        return users;
     }
 
     @Override
     public User getUser(String id) {
         UserEntity userEntity = jpaRepository.findById(id).orElseThrow(
-                () -> new NoSuchUserException("No such user for id " + id)
+                () -> new NoSuchUserException("No such user id : " + id)
         );
         return userEntity.toDomain();
     }
 
     @Override
-    public User addUser(User user) {
+    public User saveUser(User user) {
         return jpaRepository.save(new UserEntity(user)).toDomain();
     }
 
@@ -50,6 +52,7 @@ public class UserJpaStore implements UserStore {
     @Override
     public User getUserByEmail(String email) {
         return jpaRepository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("Invalid username or password")).toDomain();
+                () -> new RuntimeException("Invalid username or password"))
+                .toDomain();
     }
 }

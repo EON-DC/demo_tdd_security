@@ -9,12 +9,13 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class JwtEndpointAccessTokenGenerator implements EndpointAccessTokenGenerator {
+public class JwtEndpointAccessTokenGenerator implements EndpointAccessTokenGenerator{
+
+    private JwtSecretKey secretKey;
 
     private final long MINUTES = 60 * 1000L;
     private final long ACCESS_TOKEN_VALID_TIME = 10 * MINUTES;
     private final long REFRESH_TOKEN_VALID_TIME = 30 * MINUTES;
-    private JwtSecretKey secretKey;
 
     public JwtEndpointAccessTokenGenerator(JwtSecretKey secretKey) {
         this.secretKey = secretKey;
@@ -38,7 +39,7 @@ public class JwtEndpointAccessTokenGenerator implements EndpointAccessTokenGener
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + validTime))
-                .signWith(SignatureAlgorithm.HS256, secretKey.getSecretKeyAsBytes())
+                .signWith(SignatureAlgorithm.HS256, secretKey.getSecretkeyAsBytes())
                 .compact();
     }
 }

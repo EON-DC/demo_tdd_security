@@ -10,12 +10,11 @@ public interface UserStore {
 
     User getUser(String id);
 
-    User addUser(User user);
+    User saveUser(User user);
 
     User updateUser(User user);
 
-    void deleteUser(String id);
-
     User getUserByEmail(String email);
 
+    void deleteUser(String id);
 }

@@ -6,10 +6,11 @@ public class JwtSecretKey {
 
     private final byte[] secretKey;
 
-    public JwtSecretKey(String secretKeyPhrase){
+    public JwtSecretKey(String secretKeyPhrase) {
         secretKey = secretKeyPhrase.getBytes(StandardCharsets.UTF_8);
     }
-    public byte[] getSecretKeyAsBytes(){
+
+    public byte[] getSecretkeyAsBytes() {
         return secretKey;
     }
 }
