@@ -27,7 +27,7 @@ public class JsonUtils {
         }
     }
 
-    public static <T> T fromJsonList(String json, Class<T> clazz){
+    public static <T> List<T> fromJsonList(String json, Class<T> clazz){
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, clazz));
         } catch (JsonProcessingException e) {
