@@ -3,6 +3,7 @@ package com.example.demo_tdd_security.authentication.domain;
 import com.example.demo_tdd_security.order.domain.Order;
 import com.example.demo_tdd_security.share.domain.NameValue;
 import com.example.demo_tdd_security.share.domain.NameValueList;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Builder
 public class User implements UserDetails {
 
-    private String id;
+    @Builder.Default
+    private String id = UUID.randomUUID().toString();
     private String name;
     private String email;
     private String password;
