@@ -16,5 +16,7 @@ public interface UserStore {
 
     void delete(String id);
 
+    User getUserByEmail(String email);
+
 
 }

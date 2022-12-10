@@ -52,6 +52,9 @@ public class User implements UserDetails {
                 case "password" :
                     this.password = value;
                     break;
+                case "phone" :
+                    this.phone = value;
+                    break;
                 default:
                     throw new IllegalArgumentException("No such fields : " + name);
             }
@@ -88,5 +91,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public List<String> getRolesAsString() {
+        return roles.stream()
+                .map(userRole -> userRole.name())
+                .collect(Collectors.toList());
     }
 }

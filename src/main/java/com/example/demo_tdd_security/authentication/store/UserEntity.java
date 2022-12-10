@@ -26,12 +26,13 @@ public class UserEntity {
     private String name;
     @Column(unique = true)
     private String email;
+    private String phone;
     private String password;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<UserRole> roles;
 
     @OneToMany(mappedBy = "userEntity", orphanRemoval = true)
-    private List<OrderEntity> orders;
+    private List<OrderEntity> orders = new ArrayList<>();
 
     public UserEntity() {
         this.id = UUID.randomUUID().toString();

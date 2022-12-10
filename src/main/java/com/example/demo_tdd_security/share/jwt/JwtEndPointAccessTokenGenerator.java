@@ -4,10 +4,12 @@ import com.example.demo_tdd_security.authentication.domain.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
+@Component
 public class JwtEndPointAccessTokenGenerator implements EndPointAccessTokenGenerator {
 
     private final long MINUTES = 60 * 1000L;
@@ -21,16 +23,16 @@ public class JwtEndPointAccessTokenGenerator implements EndPointAccessTokenGener
     }
 
     @Override
-    public String createAccessToken(String email, List<UserRole> roles) {
+    public String createAccessToken(String email, List<String> roles) {
         return createToken(email, roles, ACCESS_TOKEN_VALID_TIME);
     }
 
     @Override
-    public String createRefreshToken(String email, List<UserRole> roles) {
+    public String createRefreshToken(String email, List<String> roles) {
         return createToken(email, roles, REFRESH_TOKEN_VALID_TIME);
     }
 
-    private String createToken(String email, List<UserRole> roles, long invalidTime) {
+    private String createToken(String email, List<String> roles, long invalidTime) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", roles);
         Date now = new Date();

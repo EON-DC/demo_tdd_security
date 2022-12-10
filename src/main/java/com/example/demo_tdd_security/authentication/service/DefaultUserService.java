@@ -48,7 +48,7 @@ public class DefaultUserService implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return jpaStore.findByEmail(email);
     }
 }
