@@ -11,7 +11,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
@@ -26,16 +29,16 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String phone;
-    @Builder.Default
-    private List<UserRole> roles = new ArrayList<>();;
+
     @Builder.Default
     private List<Order> orders = new ArrayList<>();
-
+    @Builder.Default
+    private List<UserRole> roles = new ArrayList<>();
 
     public User() {
         id = UUID.randomUUID().toString();
-        roles = new ArrayList<>();
         orders = new ArrayList<>();
+        roles = new ArrayList<>();
     }
 
     public void setValues(NameValueList nameValueList) {
@@ -46,17 +49,17 @@ public class User implements UserDetails {
                 case "name" :
                     this.name = value;
                     break;
-                case "email":
-                    this.email = value;
+                case "phone" :
+                    this.phone = value;
                     break;
                 case "password" :
                     this.password = value;
                     break;
-                case "phone" :
-                    this.phone = value;
+                case "email":
+                    this.email = value;
                     break;
                 default:
-                    throw new IllegalArgumentException("No such fields : " + name);
+                    throw new RuntimeException("No such field : " + name);
             }
         }
     }
@@ -91,11 +94,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public List<String> getRolesAsString() {
-        return roles.stream()
-                .map(userRole -> userRole.name())
-                .collect(Collectors.toList());
     }
 }

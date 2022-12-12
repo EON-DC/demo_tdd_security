@@ -3,52 +3,44 @@ package com.example.demo_tdd_security.authentication.service;
 import com.example.demo_tdd_security.authentication.domain.User;
 import com.example.demo_tdd_security.authentication.store.UserJpaStore;
 import com.example.demo_tdd_security.share.domain.NameValueList;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DefaultUserService implements UserService, UserDetailsService {
+public class DefaultUserService implements UserService {
 
-    private final UserJpaStore jpaStore;
+    private final UserJpaStore userJpaStore;
 
-    public DefaultUserService(UserJpaStore jpaStore) {
-        this.jpaStore = jpaStore;
+    public DefaultUserService(UserJpaStore userJpaStore) {
+        this.userJpaStore = userJpaStore;
     }
 
     @Override
-    public List<User> getAll() {
-        return jpaStore.getAll();
+    public List<User> getAllUsers() {
+        return userJpaStore.getAllUsers();
     }
 
     @Override
     public User get(String id) {
-        return jpaStore.get(id);
+        return userJpaStore.getUser(id);
     }
 
     @Override
     public User add(User user) {
-        return jpaStore.add(user);
+        return userJpaStore.addUser(user);
     }
 
     @Override
     public User update(String id, NameValueList nameValueList) {
-        User user = jpaStore.get(id);
-        user.setValues(nameValueList);
-        return user;
+        User findUser = userJpaStore.getUser(id);
+        findUser.setValues(nameValueList);
+
+        return userJpaStore.updateUser(findUser);
     }
 
     @Override
     public void delete(String id) {
-        jpaStore.get(id);
-        jpaStore.delete(id);
-    }
-
-    @Override
-    public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        return jpaStore.findByEmail(email);
+        userJpaStore.deleteUser(id);
     }
 }

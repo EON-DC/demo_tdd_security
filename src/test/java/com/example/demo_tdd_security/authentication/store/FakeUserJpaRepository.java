@@ -1,5 +1,6 @@
 package com.example.demo_tdd_security.authentication.store;
 
+import com.example.demo_tdd_security.authentication.exception.NoSuchUserException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,44 +9,35 @@ import org.springframework.data.repository.query.FluentQuery;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class FakeUserJpaRepository implements UserJpaRepository {
 
-    private Map<String, UserEntity> userMap;
+    private Map<String, UserEntity> userStore;
+
 
     public FakeUserJpaRepository() {
-        userMap = new HashMap<>();
+        userStore = new HashMap<>();
+    }
+
+    public Map<String, UserEntity> getUserStore() {
+        return userStore;
     }
 
     @Override
-    public Optional<UserEntity> findByEmail(String email) {
-        for (Map.Entry<String, UserEntity> entry : userMap.entrySet()) {
-            UserEntity user = entry.getValue();
-            if (user.getEmail().equals(email)) {
-                return Optional.of(user);
-            }
-        }
-        return Optional.empty();
+    public <S extends UserEntity> S save(S entity) {
+        userStore.put(entity.getId(), entity);
+        return entity;
     }
 
     @Override
-    public List<UserEntity> findAll() {
-        return new ArrayList<>(userMap.values());
+    public Optional<UserEntity> findById(String s) {
+        return userStore.containsKey(s) ? Optional.of(userStore.get(s)) : Optional.empty();
     }
 
     @Override
-    public List<UserEntity> findAll(Sort sort) {
-        return null;
-    }
-
-    @Override
-    public Page<UserEntity> findAll(Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public List<UserEntity> findAllById(Iterable<String> strings) {
-        return null;
+    public boolean existsById(String s) {
+        return false;
     }
 
     @Override
@@ -55,31 +47,9 @@ public class FakeUserJpaRepository implements UserJpaRepository {
 
     @Override
     public void deleteById(String s) {
-        userMap.remove(s);
+        userStore.remove(s);
     }
 
-
-
-    @Override
-    public <S extends UserEntity> S save(S entity) {
-        userMap.put(entity.getId(), entity);
-        return entity;
-    }
-
-    @Override
-    public <S extends UserEntity> List<S> saveAll(Iterable<S> entities) {
-        return null;
-    }
-
-    @Override
-    public Optional<UserEntity> findById(String s) {
-        return userMap.containsKey(s) ? Optional.of(userMap.get(s)) : Optional.empty();
-    }
-
-    @Override
-    public boolean existsById(String s) {
-        return false;
-    }
     @Override
     public void delete(UserEntity entity) {
 
@@ -99,6 +69,72 @@ public class FakeUserJpaRepository implements UserJpaRepository {
     public void deleteAll() {
 
     }
+
+    @Override
+    public <S extends UserEntity> Optional<S> findOne(Example<S> example) {
+        return Optional.empty();
+    }
+
+    @Override
+    public <S extends UserEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public <S extends UserEntity> long count(Example<S> example) {
+        return 0;
+    }
+
+    @Override
+    public <S extends UserEntity> boolean exists(Example<S> example) {
+        return false;
+    }
+
+    @Override
+    public <S extends UserEntity, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+        return null;
+    }
+
+    @Override
+    public Page<UserEntity> findAll(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public UserEntity getReferenceById(String s) {
+        return null;
+    }
+
+    @Override
+    public <S extends UserEntity> List<S> findAll(Example<S> example) {
+        return null;
+    }
+
+    @Override
+    public <S extends UserEntity> List<S> findAll(Example<S> example, Sort sort) {
+        return null;
+    }
+
+    @Override
+    public List<UserEntity> findAll() {
+        return new ArrayList<>(userStore.values());
+    }
+
+    @Override
+    public List<UserEntity> findAll(Sort sort) {
+        return null;
+    }
+
+    @Override
+    public List<UserEntity> findAllById(Iterable<String> strings) {
+        return null;
+    }
+
+    @Override
+    public <S extends UserEntity> List<S> saveAll(Iterable<S> entities) {
+        return null;
+    }
+
     @Override
     public void flush() {
 
@@ -140,42 +176,9 @@ public class FakeUserJpaRepository implements UserJpaRepository {
     }
 
     @Override
-    public UserEntity getReferenceById(String s) {
-        return null;
-    }
-
-    @Override
-    public <S extends UserEntity> Optional<S> findOne(Example<S> example) {
-        return Optional.empty();
-    }
-
-    @Override
-    public <S extends UserEntity> List<S> findAll(Example<S> example) {
-        return null;
-    }
-
-    @Override
-    public <S extends UserEntity> List<S> findAll(Example<S> example, Sort sort) {
-        return null;
-    }
-
-    @Override
-    public <S extends UserEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public <S extends UserEntity> long count(Example<S> example) {
-        return 0;
-    }
-
-    @Override
-    public <S extends UserEntity> boolean exists(Example<S> example) {
-        return false;
-    }
-
-    @Override
-    public <S extends UserEntity, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
-        return null;
+    public Optional<UserEntity> getUserEntityByEmail(String email) {
+        return Optional.of(userStore.values().stream()
+                .filter(entity -> entity.getEmail().equals(email))
+                .findAny().orElseThrow(() -> new NoSuchUserException("No such user")));
     }
 }

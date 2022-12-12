@@ -4,19 +4,20 @@ import com.example.demo_tdd_security.authentication.domain.User;
 import com.example.demo_tdd_security.authentication.domain.UserRole;
 import com.example.demo_tdd_security.order.domain.Order;
 import com.example.demo_tdd_security.order.store.OrderEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @Table(name = "TB_USER")
 public class UserEntity {
 
@@ -26,33 +27,38 @@ public class UserEntity {
     private String name;
     @Column(unique = true)
     private String email;
-    private String phone;
     private String password;
+    private String phone;
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<UserRole> roles;
-
+    private List<UserRole> roles = new ArrayList<>();
     @OneToMany(mappedBy = "userEntity", orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
 
-    public UserEntity() {
-        this.id = UUID.randomUUID().toString();
-        this.orders = new ArrayList<>();
+    protected UserEntity() {
+        id = UUID.randomUUID().toString();
+        roles = new ArrayList<>();
+        orders = new ArrayList<>();
     }
 
-    public UserEntity(User user) {
+    public UserEntity(User user){
         BeanUtils.copyProperties(user, this);
     }
 
-    public User toDomain(){
+    public User toDomain() {
         User user = new User();
         BeanUtils.copyProperties(this, user);
         if (orders.size() > 0) {
-            for (OrderEntity orderEntity : orders) {
+            for (OrderEntity entity : orders) {
                 Order order = new Order();
-                BeanUtils.copyProperties(orderEntity, order);
+                BeanUtils.copyProperties(entity, order);
                 user.getOrders().add(order);
             }
         }
         return user;
     }
+
+
+
+
+
 }

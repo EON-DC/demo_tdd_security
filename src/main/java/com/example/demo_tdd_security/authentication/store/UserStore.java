@@ -4,19 +4,18 @@ import com.example.demo_tdd_security.authentication.domain.User;
 
 import java.util.List;
 
-public interface UserStore {
+public interface UserStore  {
 
-    List<User> getAll();
+    List<User> getAllUsers();
 
-    User get(String id);
+    User getUser(String id);
 
-    User add(User user);
+    User addUser(User user);
 
-    User update(User user);
-
-    void delete(String id);
+    User updateUser(User user);
 
     User getUserByEmail(String email);
 
+    void deleteUser(String id);
 
 }

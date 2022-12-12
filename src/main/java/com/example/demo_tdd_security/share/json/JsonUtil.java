@@ -3,13 +3,16 @@ package com.example.demo_tdd_security.share.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class JsonUtils {
+@Component
+public class JsonUtil {
 
     private static ObjectMapper mapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
 
     public static String toJson(Object object) {
         try {
@@ -27,12 +30,11 @@ public class JsonUtils {
         }
     }
 
-    public static <T> List<T> fromJsonList(String json, Class<T> clazz){
+    public static <T> List<T> fromJsonList(String json, Class<T> clazz) {
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, clazz));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
-
 }

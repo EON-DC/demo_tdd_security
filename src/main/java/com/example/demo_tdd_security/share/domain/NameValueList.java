@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 public class NameValueList {
 
-    private List<NameValue> nameValues;
+    private List<NameValue> nameValues = new ArrayList<>();
 
     public NameValueList() {
         nameValues = new ArrayList<>();
@@ -19,6 +19,6 @@ public class NameValueList {
     }
 
     public void add(NameValue nameValue) {
-        this.nameValues.add(nameValue);
+        nameValues.add(nameValue);
     }
 }
