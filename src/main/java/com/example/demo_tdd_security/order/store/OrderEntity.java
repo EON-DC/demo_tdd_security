@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,7 +34,7 @@ public class OrderEntity {
     private UserEntity userEntity;
 
     @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<ItemEntity> items;
+    private List<ItemEntity> items = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "shipping_id")

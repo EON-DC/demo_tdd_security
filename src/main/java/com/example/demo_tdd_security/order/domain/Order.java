@@ -11,7 +11,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,12 +32,12 @@ public class Order {
     public Order() {
         id = UUID.randomUUID().toString();
         items = new ArrayList<>();
+        creationTimestamp = new Timestamp(new Date().getTime());
     }
 
     @Builder
-    public Order(Timestamp timestamp, Integer price, User user, ShippingAddress shippingAddress) {
+    public Order(Integer price, User user, ShippingAddress shippingAddress) {
         this();
-        this.creationTimestamp = timestamp;
         this.price = price;
         this.user = user;
         this.shippingAddress = shippingAddress;

@@ -1,6 +1,7 @@
 package com.example.demo_tdd_security.authentication.rest;
 
 import com.example.demo_tdd_security.authentication.domain.User;
+import com.example.demo_tdd_security.authentication.rest.dto.JwtTokenResponse;
 import com.example.demo_tdd_security.authentication.rest.dto.LoginDto;
 import com.example.demo_tdd_security.authentication.store.UserStore;
 import com.example.demo_tdd_security.share.jwt.JwtEndpointAccessTokenGenerator;
@@ -29,12 +30,13 @@ public class LoginController {
     }
 
     @PostMapping
-    public String login(@RequestBody LoginDto loginDto) {
+    public JwtTokenResponse login(@RequestBody LoginDto loginDto) {
         User user = userStore.getUserByEmail(loginDto.getEmail());
         if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
-            return "AccessToken : " + jwtEndpointAccessTokenGenerator.createAccessToken(user.getEmail(), user.getRolesAsString())
-                    + " RefreshToken : " + jwtEndpointAccessTokenGenerator.createRefreshToken(user.getEmail(), user.getRolesAsString());
+            return new JwtTokenResponse(jwtEndpointAccessTokenGenerator.createAccessToken(loginDto.getEmail(), user.getRolesAsString()),
+                    jwtEndpointAccessTokenGenerator.createRefreshToken(loginDto.getEmail(), user.getRolesAsString()));
         }
-        return "Invalid username or password";
+        return null;
     }
+
 }
