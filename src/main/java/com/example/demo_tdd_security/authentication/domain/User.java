@@ -3,6 +3,7 @@ package com.example.demo_tdd_security.authentication.domain;
 import com.example.demo_tdd_security.order.domain.Order;
 import com.example.demo_tdd_security.share.domain.NameValue;
 import com.example.demo_tdd_security.share.domain.NameValueList;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,6 +66,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (UserRole role: roles) {
