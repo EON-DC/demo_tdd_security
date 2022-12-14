@@ -3,12 +3,15 @@ package com.example.demo_tdd_security.authentication.service;
 import com.example.demo_tdd_security.authentication.domain.User;
 import com.example.demo_tdd_security.authentication.store.UserJpaStore;
 import com.example.demo_tdd_security.share.domain.NameValueList;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DefaultUserService implements UserService {
+public class DefaultUserService implements UserService, UserDetailsService {
 
     private final UserJpaStore userJpaStore;
 
@@ -42,5 +45,15 @@ public class DefaultUserService implements UserService {
     @Override
     public void delete(String id) {
         userJpaStore.deleteUser(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        try {
+            User userByEmail = userJpaStore.getUserByEmail(email);
+            return userByEmail;
+        } catch (Exception e) {
+            throw new UsernameNotFoundException(e.getMessage());
+        }
     }
 }

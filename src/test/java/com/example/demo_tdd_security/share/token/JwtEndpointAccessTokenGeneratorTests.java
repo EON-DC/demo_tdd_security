@@ -41,7 +41,7 @@ public class JwtEndpointAccessTokenGeneratorTests {
     @Test
     void tdd_for_createAccessToken_returnsString() throws Exception {
         // given
-        String accessToken = tokenGenerator.createAccessToken(john.getEmail(), john.getRoles());
+        String accessToken = tokenGenerator.createAccessToken(john.getEmail(), john.getRolesAsString());
 
         // when
         String subject = Jwts.parser()
@@ -58,7 +58,7 @@ public class JwtEndpointAccessTokenGeneratorTests {
     @Test
     void tdd_for_accessToken_usesIssueDate() throws Exception {
         // given
-        String accessToken = tokenGenerator.createAccessToken(john.getEmail(), john.getRoles());
+        String accessToken = tokenGenerator.createAccessToken(john.getEmail(), john.getRolesAsString());
 
         // when
         Claims body = Jwts.parser()
@@ -76,7 +76,7 @@ public class JwtEndpointAccessTokenGeneratorTests {
     @Test
     void tdd_for_accessToken_hasExpirationOf10Minutes() throws Exception {
         // given
-        String accessToken = tokenGenerator.createAccessToken(john.getEmail(), john.getRoles());
+        String accessToken = tokenGenerator.createAccessToken(john.getEmail(), john.getRolesAsString());
 
         // when
         Claims body = Jwts.parser()
@@ -94,7 +94,7 @@ public class JwtEndpointAccessTokenGeneratorTests {
     @Test
     void tdd_for_accessToken_hasUserRoles() throws Exception {
         // given
-        String accessToken = tokenGenerator.createAccessToken(john.getEmail(), john.getRoles());
+        String accessToken = tokenGenerator.createAccessToken(john.getEmail(), john.getRolesAsString());
 
         // when
         Claims body = Jwts.parser()
@@ -114,7 +114,7 @@ public class JwtEndpointAccessTokenGeneratorTests {
     @Test
     void tdd_for_refreshToken_has30MinValidTime() throws Exception{
         // given
-        String refreshToken = tokenGenerator.createRefreshToken(john.getEmail(), john.getRoles());
+        String refreshToken = tokenGenerator.createRefreshToken(john.getEmail(), john.getRolesAsString());
 
         // when
         Claims body = Jwts.parser()

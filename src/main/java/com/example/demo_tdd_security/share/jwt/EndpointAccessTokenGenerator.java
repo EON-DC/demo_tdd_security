@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface EndpointAccessTokenGenerator {
 
-    String createAccessToken(String email, List<UserRole> roles);
+    String createAccessToken(String email, List<String> roles);
 
-    String createRefreshToken(String email, List<UserRole> roles);
+    String createRefreshToken(String email, List<String> roles);
 }

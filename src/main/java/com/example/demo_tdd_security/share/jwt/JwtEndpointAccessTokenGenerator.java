@@ -23,16 +23,16 @@ public class JwtEndpointAccessTokenGenerator implements EndpointAccessTokenGener
     }
 
     @Override
-    public String createAccessToken(String email, List<UserRole> roles) {
+    public String createAccessToken(String email, List<String> roles) {
         return createToken(email, roles, VALID_ACCESS_TOKEN_TIME);
     }
 
     @Override
-    public String createRefreshToken(String email, List<UserRole> roles) {
+    public String createRefreshToken(String email, List<String> roles) {
         return createToken(email, roles, VALID_REFRESH_TOKEN_TIME);
     }
 
-    private String createToken(String email, List<UserRole> roles, Long validTime) {
+    private String createToken(String email, List<String> roles, Long validTime) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", roles);
         Date now = new Date();

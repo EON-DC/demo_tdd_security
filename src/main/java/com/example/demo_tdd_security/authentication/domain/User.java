@@ -65,10 +65,12 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
+    public Collection<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for (UserRole role: roles) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.name()));
+        }
+        return grantedAuthorities;
     }
 
     @Override
@@ -94,5 +96,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public List<String> getRolesAsString() {
+        return roles.stream()
+                .map(UserRole::name)
+                .collect(Collectors.toList());
     }
 }
