@@ -33,7 +33,7 @@ public class OrderEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
-    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ItemEntity> items = new ArrayList<>();
 
     @OneToOne
@@ -42,6 +42,17 @@ public class OrderEntity {
 
     public OrderEntity(Order order) {
         BeanUtils.copyProperties(order, this);
+        if (order.getUser() != null) {
+            userEntity = new UserEntity(order.getUser());
+        }
+        if (order.getItems().size() > 0) {
+            for (Item item : order.getItems()) {
+                items.add(new ItemEntity(item));
+            }
+        }
+        if (order.getShippingAddress() != null) {
+            shippingAddressEntity = new ShippingAddressEntity(order.getShippingAddress());
+        }
     }
 
     public Order toDomain() {
